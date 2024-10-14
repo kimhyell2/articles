@@ -20,12 +20,10 @@
         </thead>
         <tbody>
         <div>
-            <tr>
-                <th scope="row">1</th>
-                <td>
-                    <a href="">제목111 </a>
-                </td>
-                <td>내용 1111</td>
+            <tr th:each="dto : ${lists}" th:object="${dto}">
+                <th th:text="*{id}"></th>
+                <td th:text="*{title}"></td>
+                <td th:text="*{content}"></td>
             </tr>
         </div>
         </tbody>

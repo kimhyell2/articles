@@ -22,7 +22,7 @@
         <div>
             <tr th:each="dto : ${lists}" th:object="${dto}">
                 <th th:text="*{id}"></th>
-                <td th:text="*{title}"></td>
+                <td><a th:href="@{|/articles/${dto.id}|}" th:text="${dto.title}"></a></td>
                 <td th:text="*{content}"></td>
             </tr>
         </div>

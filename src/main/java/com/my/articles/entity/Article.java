@@ -13,4 +13,5 @@ public class Article {
     private String title;
     @Column(nullable = false, length = 1000)
     private String content;
+
 }

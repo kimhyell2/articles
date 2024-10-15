@@ -21,4 +21,12 @@ public class ArticleDto {
                 article.getContent()
         );
     }
+
+    public static Article fromDto(ArticleDto dto){
+        Article article = new Article();
+        article.setId(dto.getId());
+        article.setTitle(dto.getTitle());
+        article.setContent(dto.getContent());
+        return article;
+    }
 }

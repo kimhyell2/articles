@@ -2,6 +2,7 @@ package com.my.articles.service;
 
 import com.my.articles.dao.ArticleDao;
 import com.my.articles.dto.ArticleDto;
+import com.my.articles.dto.CommentDto;
 import com.my.articles.entity.Article;
 import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,15 @@ public class ArticleService {
 
     public ArticleDto findById(Long id) {
         Article article = articleDao.findById(id);
+
         if(ObjectUtils.isEmpty(article)) return null;
-        return new ArticleDto(article.getId(), article.getTitle(), article.getContent());
+//        System.out.println("=================" + article.getComments());
+        return ArticleDto.fromEntity(article);
     }
 
-    public List<Article> findAll() {
-        return articleDao.findAll();
+    public List<ArticleDto> findAll() {
+        List<Article> all = articleDao.findAll();
+        return all.stream().map(x->ArticleDto.fromEntity(x)).toList();
     }
 
     public void deleteArticle(Long id) {

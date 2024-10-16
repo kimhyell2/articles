@@ -1,13 +1,16 @@
 package com.my.articles.dao;
 
 import com.my.articles.dto.ArticleDto;
+import com.my.articles.dto.CommentDto;
 import com.my.articles.entity.Article;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -18,9 +21,29 @@ public class ArticleDao {
     @Autowired
     EntityManager em;
 
+//    public List<CommentDto> findAll() {
+//        List<CommentDto> commentDtos = new ArrayList<>();
+//        String sql = "SELECT a FROM Article a " + "ORDER BY a.id DESC";
+//        List<Article> articles = em.createQuery(sql).getResultList();
+//
+//        for (Article a : articles) {
+//            CommentDto dto = new CommentDto();
+//
+//            if (!ObjectUtils.isEmpty(a.getComments())) {
+////                dto.setArticle_id(a.getId());
+//                dto.setId(a.getComments());
+//                commentDtos.add(dto);
+//            }
+//        }
+//        System.out.println(commentDtos);
+//        return null;
+//    }
+
     public List<Article> findAll() {
-        String query = "SELECT a FROM Article a ORDER BY a.id DESC";
-        return em.createQuery(query, Article.class).getResultList();
+        String sql = "SELECT a FROM Article a " +
+                "ORDER BY a.id DESC";
+        List<Article> articles = em.createQuery(sql).getResultList();
+        return articles;
     }
 
     public Article findById(Long id) {

@@ -1,27 +1,27 @@
 package com.my.articles.dto;
 
-import com.my.articles.entity.Article;
 import com.my.articles.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class CommentDto {
+public class CommentDTO {
     private Long id;
     private String nickname;
     private String body;
 
-    public static CommentDto fromEntity(Comment comment) {
-        return new CommentDto(
+    public static CommentDTO fromEntity(Comment comment) {
+        return new CommentDTO(
                 comment.getId(),
                 comment.getNickname(),
                 comment.getBody()
         );
     }
 
-    public static Comment fromDto(CommentDto dto){
+    public static Comment fromDto(CommentDTO dto) {
         Comment comment = new Comment();
         comment.setId(dto.getId());
         comment.setNickname(dto.getNickname());
@@ -29,4 +29,3 @@ public class CommentDto {
         return comment;
     }
 }
-

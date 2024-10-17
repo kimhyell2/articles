@@ -1,43 +1,57 @@
 package com.my.articles.service;
 
-import com.my.articles.dao.ArticleDao;
-import com.my.articles.dto.ArticleDto;
-import com.my.articles.dto.CommentDto;
+import com.my.articles.dao.ArticleDAO;
+import com.my.articles.dto.ArticleDTO;
 import com.my.articles.entity.Article;
-import jakarta.persistence.Id;
-import lombok.RequiredArgsConstructor;
+import com.my.articles.repository.ArticleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ArticleService {
-    private final ArticleDao articleDao;
+    @Autowired
+    ArticleDAO dao;
 
-    public ArticleDto findById(Long id) {
-        Article article = articleDao.findById(id);
+    @Autowired
+    ArticleRepository articleRepository;
 
-        if(ObjectUtils.isEmpty(article)) return null;
-//        System.out.println("=================" + article.getComments());
-        return ArticleDto.fromEntity(article);
+    public List<ArticleDTO> getAllArticle() {
+        List<Article> articles = dao.getAllArticle();
+        if(ObjectUtils.isEmpty(articles)) {
+            return Collections.emptyList();
+        }
+        List<ArticleDTO> dtoList = articles
+                .stream().map(x -> ArticleDTO.fromArticle(x))
+                .toList();
+        return  dtoList;
     }
 
-    public List<ArticleDto> findAll() {
-        List<Article> all = articleDao.findAll();
-        return all.stream().map(x->ArticleDto.fromEntity(x)).toList();
+    public ArticleDTO getOneArticle(Long id) {
+        Article article = dao.getOneArticle(id);
+        if(ObjectUtils.isEmpty(article)) return null;
+        return ArticleDTO.fromArticle(article);
     }
 
     public void deleteArticle(Long id) {
-        articleDao.deleteArticle(id);
+        dao.deleteArticle(id);
     }
 
-    public void updateArticle(ArticleDto dto) {
-        articleDao.updateArticle(dto);
+    public void updateArticle(ArticleDTO dto) {
+        dao.updateArticle(dto);
     }
 
-    public void insertArticle(ArticleDto dto) {
-        articleDao.insertArticle(ArticleDto.fromDto(dto));
+    public void insertArticle(ArticleDTO dto) {
+        dao.insertArticle(ArticleDTO.fromDto(dto));
+    }
+
+    public Page<ArticleDTO> getarticlePage(Pageable pageable) {
+        Page<Article> articles = articleRepository.findAll(pageable);
+        return articles.map(x->ArticleDTO.fromArticle(x));
     }
 }
